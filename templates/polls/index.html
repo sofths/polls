@@ -1,0 +1,15 @@
+{%  if latest_question_list  %}
+        <ul>
+            {% for question in latest_question_list %}
+            <li><a href={% url 'polls:detail' question_id %}"/>{{ question.question_text }}</li>
+{#            url이 하드코딩 되어있다. url 이 템플릿에 하드코딩 되게 되면#}
+{#                나중에 변경될때 변경해야한다.#}
+{#                장고에서는 url 에 네임을 줄 수 있다.#}
+{#                url에 네임을 명시할 수 있다.#}
+{#                위 처럼 하면 다른 앱에서도 detail 로 url에 접근 가능하다.#}
+{# urls.py 에 name 을 명시해 줘서 코드의 유지보수성을 줄이자. #}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>no polls are available</p>
+    {% endif %}
