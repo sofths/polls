@@ -1,0 +1,6 @@
+<h1> {{ question.question_text }}</h1>
+<ul>
+   {%  for choice in question.choice_set.all %}{# <--question 을 외래키로 사용하는 choice_set << choice 를 외래키로 사용하는 모든 값을 가져와라 라는 뜻#}
+        <li>{{  choice.choice_text }}</li>
+    {% endfor %}
+</ul>
