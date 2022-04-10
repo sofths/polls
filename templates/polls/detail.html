@@ -1,6 +1,19 @@
 <h1> {{ question.question_text }}</h1>
-<ul>
-   {%  for choice in question.choice_set.all %}{# <--question 을 외래키로 사용하는 choice_set << choice 를 외래키로 사용하는 모든 값을 가져와라 라는 뜻#}
-        <li>{{  choice.choice_text }}</li>
-    {% endfor %}
-</ul>
+{#<ul>#}
+{#   {%  for choice in question.choice_set.all %}{# <--question 을 외래키로 사용하는 choice_set << choice 를 외래키로 사용하는 모든 값을 가져와라 라는 뜻#}
+{#        <li>{{  choice.choice_text }}</li>#}
+{#    {% endfor %} # 기존에는 선택지에 대한 리스트를 리스트 태그를 사용하여 화면에 뿌려줌#}
+{#</ul>#}
+{%  if error_message %}<p><strong>{{ error_message }}</strong></p> {% endif %}
+{#이번에는 서버쪽으로 보내기 위해서 form 태그와 input 태그를 사용했다. if 문을 보면 error 메시지를 받으면 error 메시지를 보여준다.#}
+{#에러 메시지를 받지 못한다면 내용이 출력되지 않을 것이다.#}
+{#view 에서 context 를 통해서 quetion 과 같이 전달되는 것을 생각 할 수 있다.#}
+<form action="{% url 'polls:vote' question.id %}" method="post">
+    {%  csrf_token %}
+    {% for choice in question.choice_set.all %}
+    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="choice.id">
+    <label for="choice{{ forloop.counter }}"> {{ choice.choice_text }}</label><br> {# label 은 이름을 보여주는 태그다. #}
+    {%  endfor %}
+    <input type="submit" value="vote">
+</form>
+

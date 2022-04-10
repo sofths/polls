@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponse,Http404
+from django.http import HttpResponse,Http404,HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.template import loader
-from .models import Question
+from .models import Question,Choice
+from django.urls import reverse
 from django.shortcuts import render # reder 는 코드 양을 줄일수 있다.
 # 간단한 함수를 지원한다. http함수를 response 하지 않고 render 로 사용할 수 있다.
 # Create your views here.
@@ -56,4 +57,17 @@ def results(request,question_id):
     response = "You're looking at the result of question %s."
     return HttpResponse(response % question_id)
 def vote(request, question_id):
-    return HttpResponse("You're voting on question %s" % question_id)
+    # return HttpResponse("You're voting on question %s" % question_id)
+    question = get_object_or_404(Question, pk=question_id)
+    try:
+        selected_cohice = question.choice_set.get(pk=request.POST['choice'])
+    except {KeyError, Choice.DoesNotExist}:
+        return render(request, 'polls/detail.html', {'question': question,
+                                                     'error_message':"You didn't select a choice",
+                                                     })
+    else:
+        selected_cohice.votes += 1
+        selected_cohice.save()
+
+        return HttpResponseRedirect('polls:result', args=(question_id, id))
+
