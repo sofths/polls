@@ -8,7 +8,7 @@
 {#이번에는 서버쪽으로 보내기 위해서 form 태그와 input 태그를 사용했다. if 문을 보면 error 메시지를 받으면 error 메시지를 보여준다.#}
 {#에러 메시지를 받지 못한다면 내용이 출력되지 않을 것이다.#}
 {#view 에서 context 를 통해서 quetion 과 같이 전달되는 것을 생각 할 수 있다.#}
-<form action="{% url 'polls:vote' question.id %}" method="post">
+<form action="{% url 'polls:vote' question.id %}" method="post"> {# 데이터를 보낼때는 post 로 보낸다. #}
     {%  csrf_token %}
     {% for choice in question.choice_set.all %}
     <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="choice.id">

@@ -12,7 +12,8 @@ class Question(models.Model):
         return self.question_text
 
     def was_published_recently(self): # 커스텀 메소드 입력가능
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1) # 현재로 부터 하루 차감한 어제의 시간을 반환하게 되고 어제 이후에 발행이 된 데이터가 리턴
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <- self.pub_date # 현재로 부터 하루 차감한 어제의 시간을 반환하게 되고 어제 이후에 발행이 된 데이터가 리턴
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE) # 위 Question 함수를 참조하겠다 라는의미 CASCADE 는 참조자가 삭제되면 삭제 된다는 뜻
     choice_text = models.CharField(max_length=200)
